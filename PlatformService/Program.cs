@@ -16,7 +16,20 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMemory"));
+if (builder.Environment.IsDevelopment())
+{
+    Console.WriteLine("--> Using InMemory Db");
+    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMemory"));
+}
+else if(builder.Environment.IsProduction())
+{
+    Console.WriteLine("--> Using SqlServer Db");
+    builder.Services.AddDbContext<AppDbContext>(
+        opt => opt.UseSqlServer(
+             builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+
+
 builder.Services.Configure<CommandServiceOptions>(
     builder.Configuration.GetSection(CommandServiceOptions.CommandService));
 
