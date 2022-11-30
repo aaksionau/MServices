@@ -29,7 +29,6 @@ else if(builder.Environment.IsProduction())
              builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 
-
 builder.Services.Configure<CommandServiceOptions>(
     builder.Configuration.GetSection(CommandServiceOptions.CommandService));
 
@@ -47,7 +46,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-PrepDb.PreparePopulation(app);
+PrepDb.PreparePopulation(app, app.Environment.IsProduction());
 
 app.UseHttpsRedirection();
 
