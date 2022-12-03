@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PlatformService.AsyncDataServices;
 using PlatformService.Configurations;
 using PlatformService.Data;
 using PlatformService.SyncDataServices.Http;
@@ -35,6 +36,7 @@ builder.Services.Configure<CommandServiceOptions>(
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<ICommandDataClient, HttpCommandDataClient>();
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
 var app = builder.Build();
 
